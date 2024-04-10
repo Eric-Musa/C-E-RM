@@ -23,7 +23,11 @@ def write_note():
     if 'timestamp' in request_body:
         # timestamp = datetime.strptime(request_body['timestamp'], INLINE_DT_FORMAT)
         # timestamp = datetime.strptime(request_body['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ')
-        timestamp = datetime.strptime(request_body['timestamp'], '%m/%d/%Y, %I:%M:%S %p')
+
+        try:
+            timestamp = datetime.strptime(request_body['timestamp'], '%m/%d/%Y, %I:%M:%S %p')
+        except ValueError:
+            timestamp = datetime.strptime(request_body['timestamp'], FILENAME_DT_FORMAT)
     else:
         timestamp = datetime.now()
 
@@ -57,8 +61,8 @@ if __name__ == '__main__':
 
     testing = False
 
-    if not testing:
-        app.run(debug=True)
+    # if not testing:
+    app.run(debug=True)
 
     if testing:
         url = 'http://127.0.0.1:5000'
